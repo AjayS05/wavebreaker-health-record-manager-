@@ -1,0 +1,48 @@
+<!doctype html>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Stats</title>{% endblock %}
+{% block body_block %}
+
+<div class="container" style="margin-top:3rem">
+
+<h1>Statewise covid Cases stats</h1>
+<br><br><br>
+<table class="table">
+  <thead class="thead-dark">
+    <th>State</th>
+    <th>Active</th>
+    <th>Discharged</th>
+    <th>Deaths</th>
+  </thead>
+  <tbody>
+    {% for state in states %}
+    <tr>
+      <td>{{ state.0 }}</td>
+      <td>{{ state.1 }}</td>
+      <td>{{ state.2 }}</td>
+      <td>{{ state.3 }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br><hr><br>
+
+<h1>Vaccinated Population Statewise</h1>
+<br>
+<table class="table">
+  <thead class="thead-dark">
+    <th>State</th>
+    <th>Vaccinated</th>
+  </thead>
+  <tbody>
+    {% for state in states %}
+    <tr>
+      <td>{{ state.0 }}</td>
+      <td>{{ state.4 }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+</div>
+{% endblock %}

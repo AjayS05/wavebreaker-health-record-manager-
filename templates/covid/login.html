@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login</title>{% endblock %}
+{% block body_block %}
+  <div class="container" style="margin-top:3rem">
+    <div class="jumbotron">
+      <h1>Please Login</h1>
+
+        <form method="post" action="{% url 'covid:user_login' %}">
+          {% csrf_token %}
+          <label for="username">Username:</label>
+          <input type="text" name="username" placeholder="Username">
+
+          <label for="password"></label>
+          <input type="password" name="password">
+
+          <input type="submit" name="" value="Login">
+
+        </form>
+
+    </div>
+  </div>
+{% endblock %}

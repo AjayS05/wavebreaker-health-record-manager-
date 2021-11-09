@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Manager</title>{% endblock %}
+{% block body_block %}
+<div class="container" style="margin-top:3rem">
+<div class="jumbotron">
+  <h1 class="display-4">Health Record Manager</h1>
+  <p class="lead">Manage your organization's data in a flash!!</p>
+  <hr class="my-4">
+  <p>Store health data of your employees or residents like their covid status, whether they have taken vaccine or not and more. <br>
+  Accessing these records and editing them have been made very easy.</p>
+</div>
+
+  {{org_sts}}
+
+
+  <form method='post'>
+    {% csrf_token %}
+      <label for="org_Select"><strong>Your organizations</strong></label>
+      <select class="form-control" name="org_Select" style="width:500px">
+        {% for records in total_orgs %}
+        <option value="{{ records.organization_name }}" name="{{ records.organization_name }}" selected="selected"> {{ records.organization_name }}</option>
+        {% endfor %}
+      </select>
+      <br>
+      <button type="submit" class="btn btn-primary" name='use_org'>use this organization</button>
+      <button type="submit" class="btn btn-primary" name='create_org'>create new organization</button>
+    </form>
+
+
+
+{% if create_org is True %}
+<form class="" action="{% url 'covid:manager' %}" method="post">
+  <p></p>
+  Enter organization name: <input type="text" name="org_name" value=""><br> <br>
+    <button type="submit" class="btn btn-primary" name = 'done_org'>save</button>
+    {% csrf_token %}
+</form>
+{% endif %}
+
+<br>
+{{dept_sts}}
+
+<form method='post'>
+  {% csrf_token %}
+    <label for="dept_Select"><strong>Your departments</strong></label>
+    <select class="form-control" name="dept_Select" style="width:500px">
+      {% for records in total_depts %}
+      <option value="{{ records.department_name }}" name="{{ records.department_name }}" selected="selected"> {{ records.department_name }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <button type="submit" class="btn btn-primary" name='use_dept'>use this department</button>
+    <button type="submit" class="btn btn-primary" name='create_dept'>create new department</button>
+  </form>
+
+  {% if create_dept is True %}
+  <form class="" action="{% url 'covid:manager' %}" method="post">
+    <p></p>
+    Enter department name: <input type="text" name="dept_name" value=""><br> <br>
+      <button type="submit" class="btn btn-primary" name = 'done_dept'>save</button>
+      {% csrf_token %}
+  </form>
+  {% endif %}
+<br>
+<strong>{{record_sts}}</strong>
+<br>
+<br>
+
+<form class="" action="{% url 'covid:manager' %}" method="post">
+  {% csrf_token %}
+  <input type="text" name="search" value="" placeholder="Enter name or Id to search">
+  <input type="submit" class="btn btn-primary" name="srch_id" value="search by sr.no">
+  <input type="submit" class="btn btn-primary" name="srch_nm" value="search by name">
+  <input type="submit" class="btn btn-primary" name="clear_form" value="clear_form">
+
+  <strong style="font-color:red">{{search_sts}}</strong>
+</form>
+
+<form action="{% url 'covid:manager' %}"  method="post">
+
+  <h3>Add your data here!</h3>
+  <h6>Please check if data is not already present otherwise it may get overwritten</h6>
+  {{ data_form.as_p }}
+  {% if upd is False %}
+  <input type="submit" class="btn btn-primary" name="data" value="submit">
+  {% else %}
+  <input type="submit" class="btn btn-primary" name="updt" value="update">
+  {% endif %}
+  {% csrf_token %}
+</form>
+<br>
+<br>
+<table class="table">
+  <thead class="thead-dark">
+    <th style="border:2px solid black">Sr no</th>
+    <th style="border:2px solid black">Name</th>
+    <th style="border:2px solid black">designation</th>
+    <th style="border:2px solid black">last vaccine date</th>
+    <th style="border:2px solid black">no_of vaccines taken</th>
+    <th style="border:2px solid black">status</th>
+    <th style="border:2px solid black">covid test date</th>
+    <th style="border:2px solid black">vaccine certificate benficiary id</th>
+
+  </thead>
+  <tbody>
+
+{% for record in total_records %}
+<tr>
+  <td style="border:2px solid black">{{record.Sr_no}}</td>
+  <td style="border:2px solid black">{{record.name}}</td>
+  <td style="border:2px solid black">{{record.designation}}</td>
+  <td style="border:2px solid black">{{record.last_vaccine_date}}</td>
+  <td style="border:2px solid black">{{record.no_of_vaccines_taken}}</td>
+  <td style="border:2px solid black">{{record.status}}</td>
+  <td style="border:2px solid black">{{record.covid_test_date}}</td>
+  <td style="border:2px solid black">{{record.vaccine_certificate_beneficiary_id}}</td>
+
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<br><br>
+<form class="" action="{% url 'covid:manager' %}" method="post">
+  {% csrf_token %}
+  <input type="text" name="search_dl" value="" placeholder="Enter name or Id to delete">
+  <input type="submit" class="btn btn-primary" name="del_id" value="delete by id">
+  <input type="submit" class="btn btn-primary" name="del_nm" value="delete by name">
+
+  <strong style="font-color:red">{{del_sts}}</strong>
+</form>
+
+
+</div>
+
+{% endblock %}
